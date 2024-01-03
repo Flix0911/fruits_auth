@@ -135,17 +135,35 @@ app.post("/fruits", async (req, res) => {
 //EDIT route - GET - /fruits/:id/edit
 app.get("/fruits/:id/edit", async (req, res) => {
     try {
-        //get the id from params
-    const id = req.params.id
-    
-    //get the fruit from the db
-    const fruit = await Fruit.findById(id)
-
-    //render the template
-    res.render("fruits/edit.ejs", {fruit})
+      // get the id from params
+      const id = req.params.id;
+      // get the fruit from the db
+      const fruit = await Fruit.findById(id);
+      //render the template
+      res.render("fruits/edit.ejs", { fruit });
     } catch (error) {
-        console.log("-------", error.message, "----------")
-        res.status(400).send("error, read logs for details")
+      console.log("-----", error.message, "------");
+      res.status(400).send("error, read logs for details");
+    }
+  });
+
+//UPDATE route - PUT - /fruits/:id
+app.put("/fruits/:id", async (req, res) => {
+    try {
+        //get the id
+        const id = req.params.id
+
+        //update readyToEat
+        req.body.readyToEat = req.body.readyToEat === "on" ? true : false
+
+        //update the fruit in the database
+        await Fruit.findByIdAndUpdate(id, req.body)
+
+        //send user to show page
+        res.redirect(`/fruits/${id}`)
+    } catch (error) {
+        console.log("-----", error.message, "------");
+        res.status(400).send("error, read logs for details");
     }
 })
 
