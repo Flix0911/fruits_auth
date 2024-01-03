@@ -167,6 +167,16 @@ app.put("/fruits/:id", async (req, res) => {
     }
 })
 
+//DELETE route - DELETE - /fruits/:id
+app.delete("/fruits/:id", async (req, res) => {
+        // get the id
+        const id = req.params.id
+        // delete the fruit
+        await Fruit.findByIdAndDelete(id)
+        // redirect to main page
+        res.redirect("/fruits")
+      })
+
 //SHOW route - GET - /fruits/:id
 app.get("/fruits/:id", async (req, res) => {
     try {
