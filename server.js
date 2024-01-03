@@ -109,6 +109,11 @@ app.get("/fruits", async (req, res) => {
     }
 })
 
+//NEW route - GET - /fruits/new
+app.get("/fruits/new", (req, res) => {
+    res.render("fruits/new.ejs")
+})
+
 //SHOW route - GET - /fruits/:id
 app.get("/fruits/:id", async (req, res) => {
     try {
@@ -125,6 +130,8 @@ app.get("/fruits/:id", async (req, res) => {
         res.status(400).send("error, read logs for details")
     }
 })
+
+
 
 //-------------------------------------
 //Server listener 
