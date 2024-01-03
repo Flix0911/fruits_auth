@@ -8,11 +8,6 @@ const methodOverride = require("method-override") // override forms
 const mongoose = require("mongoose") // connect to our mongodb
 
 
-
-
-//-------------------------------------
-//-------------------------------------
-
 //-------------------------------------
 //database connection string
 //-------------------------------------
@@ -29,6 +24,8 @@ mongoose.connection
 .on("open", () => {console.log("Connected to Mongo")})
 .on("close", () => {console.log("Disconnected from Mongo")})
 .on("error", (error) => {console.log(error)})
+
+
 
 //-------------------------------------
 //Create out Fruits model
@@ -47,10 +44,13 @@ const fruitSchema = new Schema({
 //Model - object for interacting with the database
 const Fruit = model("Fruit", fruitSchema)
 
+
+
 //-------------------------------------
 //Express app object
 //-------------------------------------
 const app = express()
+
 
 
 //-------------------------------------
@@ -70,6 +70,44 @@ app.get("/", (req, res) => {
     res.send("Your server is running...better catch it")
 })
 
+app.get("/fruits/seed", async (req, res) => {
+    try {
+        const startFruits = [
+            { name: "Orange", color: "orange", readyToEat: false },
+            { name: "Grape", color: "purple", readyToEat: false },
+            { name: "Banana", color: "orange", readyToEat: false },
+            { name: "Strawberry", color: "red", readyToEat: false },
+            { name: "Coconut", color: "brown", readyToEat: false },
+            ]
+    
+        //Delete All Fruits
+        await Fruit.deleteMany({})
+    
+        //Seed my starter fruits
+        const fruits = await Fruit.create(startFruits)
+    
+        //send fruits as response
+        res.json(fruits)
+    } catch (error) {
+        //mongoose writes an error as a message
+        console.log(error.message)
+        res.send("There was an error, read logs for error details")
+    }   
+})
+
+//INDEX Route - GET - /fruits
+app.get("/fruits", async (req, res) => {
+    try {
+        //get all the fruits
+        const fruits = await Fruit.find({}) 
+        //render a template
+        //fruits/index.ejs = views/fruits/index.ejs
+        res.render("fruits/index.ejs", {fruits})
+    } catch (error) {
+        console.log("-------", error.message, "----------")
+        res.status(400).send("error, read logs for details")
+    }
+})
 
 //-------------------------------------
 //Server listener 
