@@ -132,6 +132,23 @@ app.post("/fruits", async (req, res) => {
     }
 })
 
+//EDIT route - GET - /fruits/:id/edit
+app.get("/fruits/:id/edit", async (req, res) => {
+    try {
+        //get the id from params
+    const id = req.params.id
+    
+    //get the fruit from the db
+    const fruit = await Fruit.findById(id)
+
+    //render the template
+    res.render("fruits/edit.ejs", {fruit})
+    } catch (error) {
+        console.log("-------", error.message, "----------")
+        res.status(400).send("error, read logs for details")
+    }
+})
+
 //SHOW route - GET - /fruits/:id
 app.get("/fruits/:id", async (req, res) => {
     try {
