@@ -48,4 +48,33 @@ const fruitSchema = new Schema({
 const Fruit = model("Fruit", fruitSchema)
 
 //-------------------------------------
+//Express app object
 //-------------------------------------
+const app = express()
+
+
+//-------------------------------------
+//Middleware
+//-------------------------------------
+app.use(morgan("dev")) //logger
+app.use(methodOverride("_method")) //override form submissions
+app.use(express.urlencoded({extended: true})) //parse urlencoded bodies
+app.use(express.static("public")) //server files from public folder
+
+
+//-------------------------------------
+//Routes
+//-------------------------------------
+
+app.get("/", (req, res) => {
+    res.send("Your server is running...better catch it")
+})
+
+
+//-------------------------------------
+//Server listener 
+//-------------------------------------
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => {
+    console.log(`Server is listening on ${PORT}`)
+})
