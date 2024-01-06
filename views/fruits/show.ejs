@@ -7,14 +7,19 @@
     
     <main>
         <div>
-          <article>
-            <h2><%= fruit.name %> - <%= fruit.readyToEat ? "Ripe" : "Not Ripe" %></h2>
+          <article x-data ="{showTools: false}">
+            <h2>
+                <%= fruit.name %> - <%= fruit.readyToEat ? "Ripe" : "Not Ripe" %>
+            </h2>
             <h3><%= fruit.color %></h3>
+            <button x-on:click="showTools = !showTools">Show Options</button>
+            <div x-show="showTools">
             <a href="/fruits/<%= fruit._id %>/edit"><button>Edit</button></a>
             <form action="/fruits/<%= fruit._id %>?_method=DELETE" method="POST">
                 <button>DELETE</button>
             </form>
             <a href="/fruits"><button>Back to main</button></a>
+            </div>
         </article>
 
         </div>
