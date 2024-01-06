@@ -62,8 +62,11 @@ router.get("/seed", async (req, res) => {
 //INDEX Route - GET - /fruits
 router.get("/", async (req, res) => {
     try {
-        //get all the fruits
-        const fruits = await Fruit.find({}) 
+        //get the username from req.session
+        const username = req.session.username
+        //get all the fruits / added username in the object because it is retrieving under the current value of the username
+        //note, we can do username: username, in this as well
+        const fruits = await Fruit.find({username}) 
         //render a template
         //fruits/index.ejs = views/fruits/index.ejs
         res.render("fruits/index.ejs", {fruits})
@@ -84,6 +87,9 @@ router.post("/", async (req, res) => {
         //check if readyToEat should be true
         //expression ? true : false (ternary operator)
         req.body.readyToEat =  req.body.readyToEat === "on" ? true : false
+        //add username to req.body from req.session
+        //whenever the user creates a fruit, it is just for that user
+        req.body.username = req.session.username
 
         //create the fruit in the database
         await Fruit.create(req.body)

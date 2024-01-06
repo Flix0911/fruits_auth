@@ -24,7 +24,7 @@ router.get("/signup", (req, res) => {
 // Signup Submit Route (post -> /user/signup -> create the user)
 router.post("/signup", async (req, res) => {
     try {
-      // encrypt the password
+      // encrypt the password - hash the password
       req.body.password = await bcrypt.hash(
         req.body.password,
         await bcrypt.genSalt(10)
@@ -32,7 +32,7 @@ router.post("/signup", async (req, res) => {
   
       console.log("Hashed Password:", req.body.password);
   
-      //create the user
+      //create the user - update request body
       await User.create(req.body);
   
       //redirect user to login
@@ -44,6 +44,7 @@ router.post("/signup", async (req, res) => {
   });
 
 // Login page Route (get -> /user/login -> form)
+//just renders the login page
 router.get("/login", (req, res) => {
     res.render("user/login.ejs")
 })
@@ -67,6 +68,8 @@ router.post("/login", async (req, res) => {
     }
 
     //save that the user is logged in, in req.session
+    //doesn't express with express, exsists because we added session middleware
+    //check dev tools and go application - connect_sid. That is session ID
     req.session.username = username
     req.session.loggedIn = true
     // send them back to fruits

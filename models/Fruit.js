@@ -12,10 +12,12 @@ const { Schema, model } = mongoose;
 // const model = mongoose.model
 
 // Schema - Shape of the Data
+//adding username: String - to have your individual information when you login
 const fruitSchema = new Schema({
   name: String,
   color: String,
   readyToEat: Boolean,
+  username: String
 });
 
 // Model - object for interacting with the db
